@@ -10,10 +10,20 @@ console.log('Hello Noteful!');
 const express = require('express');
 
 const app = express();
+app.use(express.static('public'));
+
+
 
 // ADD STATIC SERVER HERE
 app.get('/api/notes', (req, res) => {
-  res.json(data);
+  console.log('i sent a get request');
+  const {searchTerm} = req.query;
+  if(searchTerm){
+    const newData = data.filter (item => item.title.includes(searchTerm));
+    res.json(newData);
+  } else {
+    res.json(data);
+  }
 });
 
 app.get('/api/notes/:id', (req, res) => {
