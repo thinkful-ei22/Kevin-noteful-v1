@@ -4,7 +4,6 @@
 const data = require('./db/notes');
 const simDB = require('./db/simDB');  // <<== add this
 const notes = simDB.initialize(data); // <<== and this
-
 // console.log('Hello Noteful!');
 
 // INSERT EXPRESS APP CODE HERE...
@@ -15,9 +14,9 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.json());
 const { PORT } = require('./config');
-const {loggerMiddleware} = require('./middleware/logger');
+const morgan = require('morgan');
 
-app.use(loggerMiddleware);
+app.use(morgan('dev'));
 
 app.get('/api/notes', (req, res) => {
   console.log('i sent a get request');
@@ -41,14 +40,24 @@ app.get('/api/notes', (req, res) => {
 //   return res.json(dataNew);
 // });
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', (req, res, next) => {
   console.log('id ran');
   const {id} = req.params;
-  notes.find(id, (err, item) =>{
-    if(err){
+  // notes.find(id, (err, item) =>{
+  //   if(err){
+  //     return res.status(404).next(err);
+  //   }
+  notes.find(id, (err, item) => {
+    if (err) {
+      console.log('error', err);
       return next(err);
     }
-    res.json(item);
+    if (item) {
+      res.json(item);
+    }else {
+      console.log('item not found');
+      next();
+    }
   });
 });
 

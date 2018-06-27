@@ -6,11 +6,14 @@
 
 // app.use(morgan('common'));
 
-const loggerMiddleware = function(req, res, next){
-  const now = new Date();
-  console.log(
-    `${now.toLocaleDateString()} ${now.toLocaleTimeString()} ${req.method} ${req.url}`);
-  next();
-};
+// const morgan = require ('morgan');
 
-module.exports = {loggerMiddleware};
+
+// const loggerMiddleware = function(req, res, next){
+//   const now = new Date();
+//   console.log(
+//     `${now.toLocaleDateString()} ${now.toLocaleTimeString()} ${req.method} ${req.url}`);
+//   next();
+// };
+
+// module.exports = {morgan};
