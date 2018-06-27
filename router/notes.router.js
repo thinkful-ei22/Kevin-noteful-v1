@@ -98,5 +98,19 @@ routerNotes.post('/', (req, res, next) => {
   });
 });
 
+routerNotes.delete('/:id', (req, res, next) => {
+  console.log('delete ran');
+  const {id} = req.params;
+  console.log(id);
+  notes.delete(id, (err, lenArr) => {
+    if (lenArr) {
+      console.log(lenArr);
+      res.status(204).end();
+    } else {
+      next();
+    }
+  });
+});
+
 module.exports = {routerNotes};
   
