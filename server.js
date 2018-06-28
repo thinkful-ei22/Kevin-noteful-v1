@@ -33,12 +33,9 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: err
+    error: err,
   });
 });
-
-
-
 
 app.listen(PORT, function () {
   console.info(`Server listening on ${this.address().port}`);

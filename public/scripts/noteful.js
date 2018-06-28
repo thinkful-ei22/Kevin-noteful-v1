@@ -86,10 +86,22 @@ const noteful = (function () {
             store.notes = searchResponse;
             render();
           });
+
         });
+
       } else {
-        console.log('Create Note, coming soon...');
+
+        api.create(noteObj, createResponse => {
+          store.currentNote = createResponse;
+
+          api.search(store.currentSearchTerm, searchResponse => {
+            store.notes = searchResponse;
+            render();
+          });
+
+        });
       }
+
     });
   }
 
@@ -122,9 +134,11 @@ const noteful = (function () {
       });
     });
   }
+
   function bindEventListeners() {
     handleNoteItemClick();
     handleNoteSearchSubmit();
+
     handleNoteFormSubmit();
     handleNoteStartNewSubmit();
     handleNoteDeleteClick();

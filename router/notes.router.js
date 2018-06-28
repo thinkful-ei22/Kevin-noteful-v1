@@ -13,12 +13,25 @@ routerNotes.get('/', (req, res, next) => {
   //   res.json(newData);
   // } else {
   //   res.json(data);
-  notes.filter(searchTerm, (err, list) => {
-    if (err) {
-      return next(err); // goes to error handler
-    }
-    res.json(list); // responds with filtered array
-  });
+
+  // notes.filter(searchTerm, (err, list) => {
+  //   if (err) {
+  //     return next(err); // goes to error handler
+  //   }
+  //   res.json(list); // responds with filtered array
+  // });
+  notes.filter(searchTerm)
+    .then(list => {
+      if(list){
+        res.json(list);
+      }
+      else{
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
   
 // app.get('/api/notes/:id', (req, res) => {
@@ -34,18 +47,32 @@ routerNotes.get('/:id', (req, res, next) => {
   //   if(err){
   //     return res.status(404).next(err);
   //   }
-  notes.find(id, (err, item) => {
-    if (err) {
+  // notes.find(id, (err, item) => {
+  //   if (err) {
+  //     console.log('error', err);
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.json(item);
+  //   }else {
+  //     console.log('item not found');
+  //     next();
+  //   }
+  // });
+  notes.find(id)
+    .then(item => {
+      if(item){
+        res.json(item);
+      }
+      else {
+        console.log('item not found');
+        next();
+      }
+    })
+    .catch(err =>{
       console.log('error', err);
-      return next(err);
-    }
-    if (item) {
-      res.json(item);
-    }else {
-      console.log('item not found');
-      next();
-    }
-  });
+      next(err);
+    });
 });
   
 routerNotes.put('/:id', (req, res, next) => {
@@ -62,16 +89,28 @@ routerNotes.put('/:id', (req, res, next) => {
     }
   });
   
-  notes.update(id, updateObj, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.json(item);
-    } else {
-      next();
-    }
-  });
+  // notes.update(id, updateObj, (err, item) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.json(item);
+  //   } else {
+  //     next();
+  //   }
+  // });
+  notes.update(id, updateObj)
+    .then(item => {
+      if(item){
+        res.json(item);
+      }
+      else{
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 // Post (insert) an item
@@ -86,30 +125,55 @@ routerNotes.post('/', (req, res, next) => {
     return next(err);
   }
   
-  notes.create(newItem, (err, item) => {
-    if (err) {
-      return next(err);
-    }
-    if (item) {
-      res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
-    } else {
-      next();
-    }
-  });
+  // notes.create(newItem, (err, item) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   if (item) {
+  //     res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
+  //   } else {
+  //     next();
+  //   }
+  // });
+  notes.create(newItem)
+    .then(item => {
+      if(item){
+        res.location(`http://${req.headers.host}/notes/${item.id}`).status(201).json(item);
+      }
+      else{
+        next();
+      }
+    })
+    .catch(err =>{
+      next(err);
+    });
 });
 
 routerNotes.delete('/:id', (req, res, next) => {
   console.log('delete ran');
   const {id} = req.params;
   console.log(id);
-  notes.delete(id, (err, lenArr) => {
-    if (lenArr) {
-      console.log(lenArr);
-      res.status(204).end();
-    } else {
-      next();
-    }
-  });
+  // notes.delete(id, (err, lenArr) => {
+  //   if (lenArr) {
+  //     console.log(lenArr);
+  //     res.status(204).end();
+  //   } else {
+  //     next();
+  //   }
+  // });
+  notes.delete(id)
+    .then(lenArr => {
+      if(lenArr){
+        console.log(lenArr);
+        res.status(204).end();
+      }
+      else{
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 
 module.exports = {routerNotes};
