@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+        <script src="/scripts/api.js"></script>
+    <script>
+api.search({})
+    .then(response => {
+      console.log(response)
+    });
+
+  // test get all with search term
+api.search({searchTerm: 'investing'})
+    .then(response => {
+      console.log('search', response)
+    });    
+
+api.details(1002)
+    .then(res => { 
+        console.log('details', res);
+    });
+
+api.update(1004,
+{"id": 1003, "title": "asdflsdjf", "content": "dafiew9aowerawoip"}) 
+    .then(res => {
+        console.log('update', res);
+    });
+
+api.create({"title": "mage", "content": "dafiew9aowerawoip"}) 
+    .then(res =>{
+        console.log('create', res);
+    });
+    
+api.remove(1012)
+    .then(res =>{
+        console.log('remove', res);
+    });
+    </script>
+</body>
+</html>

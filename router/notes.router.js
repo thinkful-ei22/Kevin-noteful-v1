@@ -149,6 +149,8 @@ routerNotes.post('/', (req, res, next) => {
     });
 });
 
+
+
 routerNotes.delete('/:id', (req, res, next) => {
   console.log('delete ran');
   const {id} = req.params;
