@@ -87,6 +87,11 @@ routerNotes.put('/:id', (req, res, next) => {
       updateObj[field] = req.body[field];
       console.log(updateObj);
     }
+    if (!updateObj.title) {
+      const err = new Error('Missing `title` in request body');
+      err.status = 400;
+      return next(err);
+    }
   });
   
   // notes.update(id, updateObj, (err, item) => {

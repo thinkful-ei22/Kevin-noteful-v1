@@ -127,17 +127,16 @@ const noteful = (function () {
 
       api.remove(noteId) 
         .then(() => {
-
-          api.search(store.currentSearchTerm) 
-            .then(searchResponse => {
-              store.notes = searchResponse;
-              if (noteId === store.currentNote.id) {
-                store.currentNote = {};
-              }
-              render();
-            });
-
+          return api.search(store.currentSearchTerm);
+        })
+        .then(searchResponse => {
+          store.notes = searchResponse;
+          if (noteId === store.currentNote.id) {
+            store.currentNote = {};
+          }
+          render();
         });
+
     });
   }
 

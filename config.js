@@ -1,2 +1,2 @@
 'use strict';
-module.exports.PORT = 8080;
+module.exports.PORT = process.env.port || 8080;
