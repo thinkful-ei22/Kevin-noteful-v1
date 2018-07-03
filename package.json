@@ -9,7 +9,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "kevin": "nodemon server.js",
     "test": "mocha"
   },
   "dependencies": {
