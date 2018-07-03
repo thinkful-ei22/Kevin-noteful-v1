@@ -100,18 +100,18 @@ describe('GET /api/notes', function () {
 
 describe('get specific object', function (){
 
-//   it('should return an object of that id', function (){
-//     return chai.request(app)
-//       .get('/api/notes/1004')
-//       .then(function (res) {
-//         expect(res).to.have.status(200);
-//         expect(res).to.be.json;
-//         expect(res.body).to.be.an('object');
-//         expect(res.body).to.include.keys('id', 'title', 'content');
-//         expect(res.body.id).to.equal(1004);
-//         expect(res.body.title).to.equal('7 things lady gaga has in common with cats');
-//       });
-//   });
+  it('should return an object of that id', function (){
+    return chai.request(app)
+      .get('/api/notes/1004')
+      .then(function (res) {
+        expect(res).to.have.status(200);
+        expect(res).to.be.json;
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.include.keys('id', 'title', 'content');
+        expect(res.body.id).to.equal(1004);
+        expect(res.body.title).to.equal('7 things lady gaga has in common with cats');
+      });
+  });
      
   it('should return a 404 of that incorrect id', function (){
     return chai.request(app)
@@ -141,11 +141,56 @@ describe('post a new note', function(){
       .catch(function(err){err.response;})
       .then(function(res){
         expect(res).to.have.status(400);
-        expect(res).to.be.json;
-        expect(res.body).to.be.a('object');
+        // expect(res).to.be.json;
+        // expect(res.body).to.be.a('object');
         expect(res.body.message).to
           .equal('Missing `title` in request body');
       });
   });
 });
 
+describe ('update a note', function (){
+  it('should update and return a note object when given valid data', function(){
+    const updatedItem = {'title': 'waerowiamef', 'content': 'abcdefg'};
+    return chai.request(app)
+      .put('/api/notes/1006')
+      .send(updatedItem)
+      .then(function(res){
+        expect(res).to.be.json;
+        expect(res.body).to.be.a('object');
+      });
+  });
+  it('should return an error of 404 for an invalid id', function(){
+    const updatedItem = {'title': 'asldfweoirer', 'content': 'asqqweoimqwe'};
+    return chai.request(app)
+      .put('/api/notes/9999')
+      .send(updatedItem)
+      .catch(function(err){err.response;})
+      .then(function(res){
+        expect(res).to.be.status(404);
+      });
+  });
+  it('should return an error of 400 when missing title', function(){
+    const updatedItem = {'content': 'sadflsadfklsam'};
+    return chai.request(app)
+      .put('/api/notes/1006')
+      .send(updatedItem)
+      .catch(function(err){err.response;})
+      .then(function(res){
+        expect(res).to.have.status(400);
+        expect(res.body.message).to
+          .equal('Missing `title` in request body');
+      });
+  });
+});
+
+describe ('delete an id', function (){
+  it('should delete an item with of the given id', function(){
+    return chai.request(app)
+      .delete('/api/notes/1003')
+      .catch(function(err){err.response;})
+      .then(function(res){
+        expect(res).to.have.status(204);
+      });
+  });
+}); 
